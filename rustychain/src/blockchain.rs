@@ -15,7 +15,7 @@ struct Transaction {
 }
 
 #[derive(Serialize, Debug)]
-pub struct Blockheader {
+pub struct BlockHeader {
     timestamp: i64,
     nonce: u32,
     pre_hash: String,
@@ -23,16 +23,18 @@ pub struct Blockheader {
     difficulty: u32,
 }
 
+type transactions = Vec<Transaction>;
+
 #[derive(Serialize, Debug)]
 pub struct Block {
-    header: Blockheader,
+    header: BlockHeader,
     count: u32,
-    transactions: Vec<Transaction>,
+    transactions: transactions,
 }
 
-pub struct Chain {
+pub struct BlockChain {
     chain: Vec<Block>,
-    curr_trans: Vec<Transaction>,
+    curr_trans: transactions,
     difficulty: u32,
     miner_addr: String,
     reward: f32,
