@@ -7,14 +7,14 @@ use self::serde::Serialize;
 use self::sha2::{Digest, Sha256};
 use std::fmt::Write;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 struct Transaction {
     sender: String,
     receiver: String,
     amount: f32,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Debug, Serialize)]
 pub struct BlockHeader {
     timestamp: i64,
     nonce: u32,
@@ -25,7 +25,7 @@ pub struct BlockHeader {
 
 type transactions = Vec<Transaction>;
 
-#[derive(Serialize, Debug)]
+#[derive(Debug, Serialize)]
 pub struct Block {
     header: BlockHeader,
     count: u32,
