@@ -39,3 +39,18 @@ pub struct BlockChain {
     miner_address: String,
     reward: f32,
 }
+
+impl BlockChain {
+    pub fn new(miner_address: String, difficulty: u32) -> Self {
+        let mut chain = BlockChain {
+            chain: Vec::new(),
+            curr_txns: Vec::new(),
+            difficulty,
+            miner_address,
+            reward: 100f32,
+        };
+
+        chain.generate_new_block();
+        chain
+    }
+}
