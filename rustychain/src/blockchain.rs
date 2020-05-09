@@ -18,8 +18,8 @@ struct Transaction {
 pub struct BlockHeader {
     timestamp: i64,
     nonce: u32,
-    pre_hash: String,
-    merkle: String,
+    prev_hash: String,
+    merkle_hash: String,
     difficulty: u32,
 }
 
@@ -29,13 +29,13 @@ type transactions = Vec<Transaction>;
 pub struct Block {
     header: BlockHeader,
     count: u32,
-    transactions: transactions,
+    txns: transactions,
 }
 
 pub struct BlockChain {
     chain: Vec<Block>,
-    curr_trans: transactions,
+    curr_txns: transactions,
     difficulty: u32,
-    miner_addr: String,
+    miner_address: String,
     reward: f32,
 }
