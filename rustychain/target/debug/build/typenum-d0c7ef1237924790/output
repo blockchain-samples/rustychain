@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/gianfrancoripepi/rustychain/rustychain/target/debug/build/typenum-d0c7ef1237924790/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/gianfrancoripepi/rustychain/rustychain/target/debug/build/typenum-d0c7ef1237924790/out/op.rs
