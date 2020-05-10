@@ -49,8 +49,29 @@ impl BlockChain {
             miner_address,
             reward: 100f32,
         };
-
         chain.generate_new_block();
+
         chain
     }
+
+    pub fn generate_new_block(&mut self) -> bool {
+        let header = BlockHeader {
+            timestamp: time::now().to_timespec().sec,
+            nonce: 0,
+            prev_hash: self.last_hash(),
+            merkle_hash: String::new(),
+            difficulty: self.difficulty
+        };
+
+        let reward_trans = Transaction {
+            sender: String::from("Root"),
+            receiver: self.miner_address.clone(),
+            amount: self.reward
+        };
+
+        let mut block = Block {
+            header,
+            count: 0,
+            txns: vec![]
+        };
 }
