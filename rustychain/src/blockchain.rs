@@ -56,10 +56,10 @@ impl BlockChain {
 
     pub fn hash<T: Serialize>(item: &T) -> String {
         let input = serde_json::to_string(&item).unwrap();
+
         let mut hasher = Sha256::default();
         hasher.input(input.as_bytes());
-        let res = hasher.result();
-        let vec_res = res.to_vec();
+        let vec_res = hasher.result().to_vec();
 
         BlockChain::hex_to_string(vec_res.as_slice())
     }
@@ -67,7 +67,7 @@ impl BlockChain {
     pub fn hex_to_string(vec_res: &[u8]) -> String {
         let mut s = String::new();
         for b in vec_res {
-            write!(&mut s, "{:x}", b).expect("unable to write");
+            write!(&mut s, "{:x}", b).expect("Unable to write bytes!");
         }
         s
     }
