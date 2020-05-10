@@ -74,4 +74,7 @@ impl BlockChain {
             count: 0,
             txns: vec![]
         };
+
+        true
+    }
 }
