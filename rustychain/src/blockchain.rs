@@ -103,4 +103,14 @@ impl BlockChain {
         };
         BlockChain::hash(&block.header)
     }
+
+    pub fn new_transaction(&mut self, sender: String, receiver: String, amount: f32) -> bool {
+        self.curr_txns.push(Transaction {
+            sender,
+            receiver,
+            amount,
+        });
+
+        true
+    }
 }
