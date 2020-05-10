@@ -23,18 +23,18 @@ pub struct BlockHeader {
     difficulty: u32,
 }
 
-type transactions = Vec<Transaction>;
+type Transactions = Vec<Transaction>;
 
 #[derive(Debug, Serialize)]
 pub struct Block {
     header: BlockHeader,
     count: u32,
-    txns: transactions,
+    txns: Transactions,
 }
 
 pub struct BlockChain {
     chain: Vec<Block>,
-    curr_txns: transactions,
+    curr_txns: Transactions,
     difficulty: u32,
     miner_address: String,
     reward: f32,
