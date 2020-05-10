@@ -54,27 +54,53 @@ impl BlockChain {
         chain
     }
 
+    pub fn hash<T: Serialize>(item: &T) -> String {
+        let input = serde_json::to_string(&item).unwrap();
+        let mut hasher = Sha256::default();
+        hasher.input(input.as_bytes());
+        let res = hasher.result();
+        let vec_res = res.to_vec();
+
+        BlockChain::hex_to_string(vec_res.as_slice())
+    }
+
+    pub fn hex_to_string(vec_res: &[u8]) -> String {
+        let mut s = String::new();
+        for b in vec_res {
+            write!(&mut s, "{:x}", b).expect("unable to write");
+        }
+        s
+    }
+
     pub fn generate_new_block(&mut self) -> bool {
         let header = BlockHeader {
             timestamp: time::now().to_timespec().sec,
             nonce: 0,
             prev_hash: self.last_hash(),
             merkle_hash: String::new(),
-            difficulty: self.difficulty
+            difficulty: self.difficulty,
         };
 
         let reward_trans = Transaction {
             sender: String::from("Root"),
             receiver: self.miner_address.clone(),
-            amount: self.reward
+            amount: self.reward,
         };
 
         let mut block = Block {
             header,
             count: 0,
-            txns: vec![]
+            txns: vec![],
         };
 
         true
+    }
+
+    pub fn last_hash(&self) -> String {
+        let block = match self.chain.last() {
+            Some(block) => block,
+            None => return String::from_utf8(vec![48; 64]).unwrap(),
+        };
+        BlockChain::hash(&block.header)
     }
 }
