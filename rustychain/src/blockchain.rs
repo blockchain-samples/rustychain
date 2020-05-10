@@ -72,6 +72,16 @@ impl BlockChain {
         s
     }
 
+    pub fn set_difficulty(&mut self, difficulty: u32) -> bool {
+        self.difficulty = difficulty;
+        true
+    }
+
+    pub fn set_reward(&mut self, reward: f32) -> bool {
+        self.reward = reward;
+        true
+    }
+
     pub fn generate_new_block(&mut self) -> bool {
         let header = BlockHeader {
             timestamp: time::now().to_timespec().sec,
