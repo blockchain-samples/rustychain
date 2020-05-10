@@ -72,6 +72,27 @@ impl BlockChain {
         s
     }
 
+    pub fn proof_of_work(header: &mut BlockHeader) {
+        loop {
+            let hash = BlockChain::hash(header);
+            let slice = &hash[..header.difficulty as usize];
+            match slice.parse::<u32>() {
+                Ok(val) => {
+                    if val != 0 {
+                        header.nonce += 1;
+                    } else {
+                        println!("Block hash: {}", hash);
+                        break;
+                    }
+                }
+                Err(_) => {
+                    header.nonce += 1;
+                    continue;
+                }
+            };
+        }
+    }
+
     pub fn set_difficulty(&mut self, difficulty: u32) -> bool {
         self.difficulty = difficulty;
         true
@@ -91,7 +112,7 @@ impl BlockChain {
             difficulty: self.difficulty,
         };
 
-        let reward_trans = Transaction {
+        let reward_txn = Transaction {
             sender: String::from("Root"),
             receiver: self.miner_address.clone(),
             amount: self.reward,
@@ -103,6 +124,14 @@ impl BlockChain {
             txns: vec![],
         };
 
+        block.txns.push(reward_txn);
+        block.txns.append(&mut self.curr_txns);
+        block.count = block.txns.len() as u32;
+        block.header.merkle_hash = BlockChain::generate_merkle_hash(block.txns.clone());
+        BlockChain::proof_of_work(&mut block.header);
+
+        println!("{:#?}", &block);
+        self.chain.push(block);
         true
     }
 
@@ -112,6 +141,29 @@ impl BlockChain {
             None => return String::from_utf8(vec![48; 64]).unwrap(),
         };
         BlockChain::hash(&block.header)
+    }
+
+    fn generate_merkle_hash(curr_trans: Vec<Transaction>) -> String {
+        let mut merkle = Vec::new();
+
+        for t in &curr_trans {
+            let hash = BlockChain::hash(t);
+            merkle.push(hash);
+        }
+
+        if merkle.len() % 2 == 1 {
+            let last = merkle.last().cloned().unwrap();
+            merkle.push(last);
+        }
+
+        while merkle.len() > 1 {
+            let mut h1 = merkle.remove(0);
+            let mut h2 = merkle.remove(0);
+            h1.push_str(&mut h2);
+            let nh = BlockChain::hash(&h1);
+            merkle.push(nh);
+        }
+        merkle.pop().unwrap()
     }
 
     pub fn new_transaction(&mut self, sender: String, receiver: String, amount: f32) -> bool {
