@@ -6,9 +6,6 @@ This project was built using the *Rust* programming language.
 
 ### Run the app
 ```
-// go to rustychain directory
-cd rustychain
-
 // run cargo to run the project
 cargo run
 
